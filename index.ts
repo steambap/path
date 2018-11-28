@@ -17,6 +17,7 @@ const {
 
 interface PlatformSpecificPath {
   normalize(path: string): string;
+  toNamespacedPath(path: string): string;
   readonly sep: string;
   readonly delimiter: string;
 }
@@ -221,6 +222,9 @@ const win32: PlatformSpecificPath = {
       return device;
     }
   },
+  toNamespacedPath(path) {
+    return path;
+  },
   sep: "\\",
   delimiter: ";"
 };
@@ -240,6 +244,10 @@ const posix: PlatformSpecificPath = {
     if (path.length > 0 && trailingSeparator) path += "/";
 
     if (isAbsolute) return "/" + path;
+    return path;
+  },
+  toNamespacedPath(path) {
+    // Non-op on posix systems
     return path;
   },
   sep: "/",
